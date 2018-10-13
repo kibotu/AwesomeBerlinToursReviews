@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Awesome Berlin Tours Reviews</string>
+    <string name="title_reviews">Reviews</string>
+    <string name="intro_title">Intro</string>
+    <string name="reviews_title">Reviews</string>
+    <string name="berlin_tours_title">Berlin Tempelhof Airport: The Legend of Tempelhof</string>
+    <string name="translate">Translate</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="reviewed_by">reviewed by</string>
+    <string name="date">Date</string>
+    <string name="rating">Rating</string>
+    <string name="discover_title">Discover</string>
+    <string name="bookings_title">Bookings</string>
+    <string name="wish_list_title">Wishlist</string>
+    <string name="profile_title">Profile</string>
+    <string name="coming_soon">Coming soon.</string>
+</resources>

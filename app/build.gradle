@@ -1,0 +1,152 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+if (isCi) apply plugin: 'img-optimizer'
+apply plugin: 'com.github.gfx.ribbonizer'
+
+ext {
+    versionName = '1.0'
+}
+
+android {
+
+    compileSdkVersion compileSdkVer
+    buildToolsVersion buildToolsVer
+
+    defaultConfig {
+        applicationId "com.getyourguide.berlintours"
+        minSdkVersion 15
+        targetSdkVersion targetSdkVer
+        versionCode 1
+        versionName versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file(DEBUG_KEYSTORE_FILE)
+            storePassword DEBUG_STORE_PASSWORD
+            keyAlias DEBUG_KEYSTORE_ALIAS
+            keyPassword DEBUG_KEY_PASSWORD
+        }
+        release {
+            storeFile file(RELEASE_KEYSTORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEYSTORE_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
+            pseudoLocalesEnabled true
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            crunchPngs false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.release
+            crunchPngs true
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // region java compiler flags
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // endregion
+
+    // region dex options
+
+    dexOptions {
+        preDexLibraries = !project.hasProperty("ci")
+        javaMaxHeapSize '4g'
+        maxProcessCount 8
+    }
+
+    // endregion
+
+    // region test options
+
+    testOptions {
+        unitTests.all {
+            jvmArgs '-noverify'
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
+        }
+        unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
+    }
+
+    // endregion
+
+    // region adb options
+
+    adbOptions {
+        timeOutInMs 10 * 60 * 1000 // 10 minutes
+    }
+
+    // endregion
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.0-rc-57'
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation libs.rx2Android
+    implementation libs.retrofit
+    implementation libs.retrofitAdapterRxJava2
+    implementation libs.retrofitConverterGson
+    implementation libs.okhttp3
+    implementation libs.okhttp3LoggingInterceptor
+    implementation libs.logger
+    implementation libs.navigationFragment
+    implementation libs.navigationUI
+
+    implementation libs.pagingCommon
+    implementation libs.pagingRuntime
+
+    implementation libs.lifecycleViewmodel
+    implementation libs.lifecycleExtensions
+    implementation libs.lifecycleLivedata
+
+    implementation libs.recyclerviewAnimators
+    implementation libs.androidSweetSheet
+}
+
+// workaround for java.lang.NoClassDefFoundError: Failed resolution of: Landroid/view/View$OnUnhandledKeyEventListener;
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "com.android.support") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "26.+"
+            }
+        }
+    }
+}

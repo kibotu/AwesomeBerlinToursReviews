@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/discover"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/discover_title" />
+
+    <item
+        android:id="@+id/bookings"
+        android:icon="@drawable/ic_collections_bookmark"
+        android:title="@string/bookings_title" />
+
+    <item
+        android:id="@+id/reviews"
+        android:icon="@drawable/ic_rate_review"
+        android:title="@string/reviews_title" />
+
+    <item
+        android:id="@+id/wish_list"
+        android:icon="@drawable/ic_action_heart"
+        android:title="@string/wish_list_title" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_action_user"
+        android:title="@string/profile_title" />
+
+</menu>

@@ -1,0 +1,34 @@
+buildscript {
+
+    apply from: "${project.rootDir}/dependencies/dependencies.gradle"
+
+    repositories {
+        maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
+        google()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath plugin.gradleBuildTools
+        classpath plugin.kotlinGradleEA
+        classpath plugin.kotlinApt
+        classpath plugin.imgOptimizer
+        classpath plugin.ribbonizer
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url 'https://kotlin.bintray.com/kotlinx' }
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

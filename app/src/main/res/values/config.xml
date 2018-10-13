@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gyg_base_url">https://www.getyourguide.com/</string>
+    <string name="google_translate_base_url">https://translation.googleapis.com/</string>
+    <bool name="enable_logging">true</bool>
+    <integer name="page_size">10</integer>
+</resources>
